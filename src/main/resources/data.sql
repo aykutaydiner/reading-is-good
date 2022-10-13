@@ -1,0 +1,48 @@
+drop table if exists address CASCADE ;
+drop table if exists book CASCADE ;
+drop table if exists book_amount CASCADE ;
+drop table if exists customer CASCADE ;
+drop table if exists order_book CASCADE ;
+drop table if exists orders CASCADE ;
+drop sequence if exists hibernate_sequence;
+create sequence hibernate_sequence start with 1 increment by 1;
+create table address (id bigint not null, city varchar(255), country varchar(255), district varchar(255), free_text_address varchar(255), latitude float not null, longitude float not null, name varchar(255), postal_code varchar(255), customer_id bigint, primary key (id));
+create table book (id bigint not null, additional_info varchar(255), author varchar(255), book_category varchar(255), image_url varchar(255), name varchar(255), stock_count integer not null, primary key (id));
+create table book_amount (id bigint not null, active boolean not null, amount numeric(19,2), change_date timestamp, book_id bigint, primary key (id));
+create table customer (id bigint not null, cell_phone varchar(255), email varchar(255), identifier_number varchar(255), name varchar(255), surname varchar(255), primary key (id));
+create table order_book (id bigint not null, book_id bigint, book_name varchar(255), book_price numeric(19,2), order_count integer not null, order_id bigint, primary key (id));
+create table orders (id bigint not null, customer_id bigint not null, discount_rate integer not null, order_amount numeric(19,2), order_date_time timestamp, order_status integer, primary key (id));
+alter table address add constraint FK93c3js0e22ll1xlu21nvrhqgg foreign key (customer_id) references customer;
+alter table book_amount add constraint FKku27p3087j1q3ubip9e7jrpfj foreign key (book_id) references book;
+alter table order_book add constraint FKpci06ofdi2x6lbcan47nlhe2y foreign key (order_id) references orders;
+
+
+
+insert into customer values (10000, 5442522705, 'aykutaydiner@hotmail.com','16066548795', 'aykut', 'aydıner');
+insert into customer values (20000, 5554585265, 'jackwolfskin@gmail.com','654845454', 'jack', 'wolfskin');
+insert into customer values (30000, 4586925, 'janewood@gmail.com','54564157', 'jane', 'wood');
+insert into address values(10000, 'Ankara', 'Turkey', 'Etimesgut', null, 39.933365, 32.859741, 'Home Address', '06100', 10000);
+insert into address values(20000, 'Ankara', 'Turkey', 'Cankaya', null, 39.933378, 32.859755, 'Work Address', '06100', 10000);
+insert into address values(30000, 'London', 'England', 'Hellborn', null, 51.507351, -0.127758, 'Hellborn Home', 'EC2A 2ES', 20000);
+insert into address values(40000, 'New York', 'USA', 'Jersey', null, 40.712776, -74.005974, 'My address', '10021', 30000);
+insert into book values (10000, null, 'Hüseyin Nihal Atsız', 'HISTORY', 'https://www.goodreads.com/book/photo/11407007-bozkurtlar', 'Bozkurtlar', 100);
+insert into book values (20000, null, 'Daniel Stashower', 'HISTORY', 'https://www.goodreads.com/book/photo/59808343-american-demon', 'American Demon', 50);
+insert into book values (30000, null, 'Erin Sterling', 'FANTASY', 'https://www.goodreads.com/book/photo/59949720-the-kiss-curse', 'The Kiss Curse', 45);
+insert into book values (40000, null, 'Stephen King', 'FANTASY', 'https://www.goodreads.com/book/photo/60177373-fairy-tale', 'Fairy Tale', 2);
+insert into book values (50000, null, 'Bree Paulsen', 'COMIC_BOOK', 'https://www.goodreads.com/book/photo/59811239-garlic-and-the-witch', 'Garlic and the Witch', 10);
+insert into book values (60000, null, 'Rachel Gillig ', 'HORROR', 'https://www.goodreads.com/book/photo/58340706-one-dark-window', 'One Dark Window', 25);
+insert into BOOK_AMOUNT values (10000, 1, 125.55, CURRENT_TIMESTAMP(),10000);
+insert into BOOK_AMOUNT values (20000, 1, 42.54, CURRENT_TIMESTAMP(),20000);
+insert into BOOK_AMOUNT values (30000, 1, 100, CURRENT_TIMESTAMP(),30000);
+insert into BOOK_AMOUNT values (40000, 1, 45.86, CURRENT_TIMESTAMP(),40000);
+insert into BOOK_AMOUNT values (50000, 1, 74.45, CURRENT_TIMESTAMP(),50000);
+insert into BOOK_AMOUNT values (60000, 1, 12.75, CURRENT_TIMESTAMP(),60000);
+insert into ORDERS values (10000, 10000, 10, 450,CURRENT_TIMESTAMP(), 4);
+insert into ORDER_BOOK values(10000, 10000, 'Bozkurtlar', 100, 5, 10000);
+insert into ORDERS values (20000, 10000, 0, 500,CURRENT_TIMESTAMP(), 4);
+insert into ORDER_BOOK values(20000, 20000, 'Bozkurtlar', 50, 10, 20000);
+insert into ORDERS values (30000, 20000, 0, 45,CURRENT_TIMESTAMP(), 4);
+insert into ORDER_BOOK values(30000, 30000, 'The Kiss Curse', 45, 10, 30000);
+insert into ORDERS values (40000, 30000, 0, 171.41,DATEADD('DAY',300000, CURRENT_DATE), 4);
+insert into ORDER_BOOK values(40000, 40000, 'Fairy Tale', 45.86, 10, 40000);
+insert into ORDER_BOOK values(50000, 10000, 'Bozkurtlar', 125.55, 10, 40000);
